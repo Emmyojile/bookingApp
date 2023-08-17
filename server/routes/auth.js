@@ -1,10 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-import {} from '../controllers/auth.js';
+import {register, login} from '../controllers/auth.js';
 
 
-router.route('/').get(getAllRecipes);
-router.route('/').post(verifyToken, createRecipe);
+router.route('/reg').post(register);
+router.route('/log').post(login);
 
 export default router;

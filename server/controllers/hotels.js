@@ -1,57 +1,53 @@
 import Hotel from "../models/Hotel.js";
+import {createError} from "../utils/error.js";
 
 //Create Hotel
-export const createHotel = async (req, res) => {
+export const createHotel = async (req, res, next) => {
     const newHotel = new Hotel(req.body);
     try {
         const savedHotel = await newHotel.save();
-        return res.json(savedHotel)
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(200).json(savedHotel)
+    } catch (err) {
+        next(err);
     }
 }
 
 //Update Hotel
-export const updateHotel = async (req, res) => {    
+export const updateHotel = async (req, res, next) => {    
     try {
         const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true});
-        return res.json(updatedHotel)
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(200).json(updatedHotel)
+    } catch (err) {
+        next(err);
     }
 }
 
 //Delete Hotel
-export const deleteHotel = async (req, res) => {    
+export const deleteHotel = async (req, res, next) => {    
     try {
         await Hotel.findByIdAndDelete(req.params.id);
-        return res.json("Hotel deleted Successfully");
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(200).json("Hotel deleted Successfully");
+    } catch (err) {
+        next(err);
     }
 }
 
 //Get Single Hotel
-export const singleHotel = async (req, res) => {    
+export const singleHotel = async (req, res, next) => {    
     try {
         const hotel = await Hotel.findById(req.params.id);
-        return res.json(hotel)
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(200).json(hotel)
+    } catch (err) {
+        next(err);
     }
 }
 
 //Get All Hotel
-export const getAllHotels = async (req, res) => {    
+export const getAllHotels = async (req, res, next) => {    
     try {
         const allHotels = await Hotel.find();
-        return res.json(allHotels)
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(200).json(allHotels)
+    } catch (err) {
+        next(err);
     }
 }
