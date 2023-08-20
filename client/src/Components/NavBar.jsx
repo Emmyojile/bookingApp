@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Countainer = styled.div`
     height: 50px;
-    background-color: #003580;
+    background-color: #352F44;
     display: flex;
     justify-content: center;
 `
@@ -22,7 +22,7 @@ const LinkContainer = styled.div``
 const LinkButton = styled.button`
     margin-left: 20px;
     border: none;
-    padding: 2px;
+    padding: 10px;
     cursor: pointer;
     color: #003580;
 `
