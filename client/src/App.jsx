@@ -1,23 +1,24 @@
 import { useState } from 'react'
 import { Routes, Route} from "react-router-dom"
 import Layout from "../src/Layouts/main"
+import {List}  from './Pages/List'
+import {Home} from './Pages/Home'
+import { Hotel } from './Pages/Hotel'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <Routes>
-        <Route path='/' element={<Layout/>}>
-            <Route/>
-            <Route/>
-            <Route/>
-            <Route/>
-        </Route>
-      </Routes>
+      <Route path='/' element ={<Layout showHeaderElements={true}/>}>
+        <Route index element={<Home />}/>
+        <Route path='/hotels' element={<List showHeaderElements={false} isInList={true}/>}/>
+        <Route path='/hotels/:id' element={<Hotel showHeaderElements={true} />}/>
+      </Route>
+    </Routes>
     </>
   )
 }
-import { Form } from 'react-router-dom'
 
 export default App

@@ -16,7 +16,7 @@ const Container = styled.div`
 const HeaderCountainer = styled.div`
     width: 100%;
     max-width: 1024px;
-    margin: 20px 0px 100px 0px;
+    margin: ${props => (props.isInList ? '50px 0px 0px 0px' : '20px 0px 100px 0px')}
 `;
 const HeaderList = styled.div`
     display: flex;
@@ -107,11 +107,15 @@ const OptionCountBtn = styled.button`
     color: #5C5470;
     cursor: pointer;
     background-color: white;
+
+    &:disabled{
+        cursor : not-allowed;
+    }
 `;
 const OptionCountNumber = styled.span``;
 
 
-export const Header = () => {
+export const Header = ({showHeaderElements, isInList}) => {
     const [openDate, setOpenDate] = useState(false);
     const [date, setDate] = useState([
         {
@@ -139,7 +143,7 @@ export const Header = () => {
 
   return (
     <Container>
-    <HeaderCountainer>
+    <HeaderCountainer isInList={isInList}>
         <HeaderList>
             <HeaderListItem style={{border:'1px solid white', padding:'10px', borderRadius:'20px'}}>
                 <Hotel/>
@@ -162,6 +166,8 @@ export const Header = () => {
                 <span>Airport taxis</span>
             </HeaderListItem>
         </HeaderList>
+        {showHeaderElements && (
+        <>
         <HeaderTitle>A lifetime of Discounts? It's Excellent</HeaderTitle>
         <HeaderDesc>Get rewarded for your travels unlock instant savings of 10% or more with a free emmyBooking account</HeaderDesc>
         <HeaderBtn>Sign in / Register</HeaderBtn>
@@ -190,7 +196,8 @@ export const Header = () => {
             </HeaderSearchItem>
             <HeaderSearchItem>
                 <HeaderIcon><Person/></HeaderIcon>
-                <HeaderSearchText>{`${options.adult} adult - ${options.children} children - ${options.room} room`}</HeaderSearchText>
+                <HeaderSearchText onClick={()=> setOpenOptions(!openOptions)}>{`${options.adult} adult - ${options.children} children - ${options.room} room`}</HeaderSearchText>
+                {openOptions &&
                 <Option>
                     <OptionItem>
                         <OptionText>Adult</OptionText>
@@ -217,12 +224,13 @@ export const Header = () => {
                         </OptionCount>
                     </OptionItem>
                 </Option>
-                
+                }
             </HeaderSearchItem>
             <HeaderSearchItem>
                 <HeaderBtn>Search</HeaderBtn>
             </HeaderSearchItem>
-        </HeaderSearch>
+        </HeaderSearch> 
+        </>) }
     </HeaderCountainer>
     </Container>
   )
