@@ -2,7 +2,7 @@
     width: 100%;
     max-width: 1024px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 20px;
     z-index: 1;
 }
@@ -22,6 +22,6 @@
 
 .featuredTitles{
     position: absolute;
-    bottom:30px;
+    bottom:20px;
     left: 20px;
 }
