@@ -6,7 +6,10 @@ import {
 import {List}  from './Pages/list/List'
 import {Home} from './Pages/home/Home'
 import { Hotel } from './Pages/hotel/Hotel'
+import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_LOCAL_URL;
+axios.defaults.withCredentials = true
 
 function App() {
   return (
