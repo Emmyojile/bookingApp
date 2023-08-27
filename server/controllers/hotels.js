@@ -43,18 +43,41 @@ export const singleHotel = async (req, res, next) => {
 }
 
 // Get All Hotels
+// export const getAllHotels = async (req, res, next) => {    
+//     try {
+//         const limit = Number(req.query.limit) || 1;
+//         const allHotels = await Hotel.find(req.query).limit(limit);
+//         console.log(req.query.limit);
+//         console.log(req.query);
+//         console.log(allHotels);
+//         return res.status(200).json(allHotels)
+//     } catch (err) {
+//         console.error(err)
+//         next(err);
+//     }
+// }
+
 export const getAllHotels = async (req, res, next) => {    
     try {
-        const allHotels = await Hotel.find(req.query).limit(req.query.limit);
-        console.log(req.query.limit);
-        console.log(req.query);
-        console.log(allHotels);
-        return res.status(200).json(allHotels)
+        let query = {}; // Initialize an empty query object
+        
+        if (req.query.featured) {
+            // If "featured" is provided in the query, filter by featured hotels
+            query.featured = req.query.featured === 'true'; 
+            // Convert "true" or "false" to boolean
+        }
+        
+        const limit = parseInt(req.query.limit); // Convert limit to integer
+        
+        const allHotels = await Hotel.find(query).limit(limit); // Use the limit parameter
+        
+        return res.status(200).json(allHotels);
     } catch (err) {
-        console.error(err)
+        console.error(err);
         next(err);
     }
-}
+};
+
 
 
 // Get Hotels by Count
