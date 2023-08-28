@@ -42,6 +42,35 @@ export const singleHotel = async (req, res, next) => {
     }
 }
 
+export const getAllHotels = async (req, res, next) => {    
+    try {
+        const { featured, name, sort} = req.query;
+        const queryObject = {};
+
+        if (featured){
+            queryObject.featured = featured === 'false' ? false : true;
+        }
+
+        if (name){
+            queryObject.name = {$regex: name, $options: 'i'};
+        }
+        
+        let result = Hotel.find(queryObject);
+        if(sort){
+            const sortList = sort.split(',').join(' ')
+            result = result.sort(sortList);
+        } else {
+            result = result.sort('createdAt');
+        }
+        
+        const allHotels = await result;
+        return res.status(200).json(allHotels)
+    } catch (err) {
+        console.error(err)
+        next(err);
+    }
+}
+
 // Get All Hotels
 // export const getAllHotels = async (req, res, next) => {    
 //     try {
@@ -57,26 +86,6 @@ export const singleHotel = async (req, res, next) => {
 //     }
 // }
 
-export const getAllHotels = async (req, res, next) => {    
-    try {
-        let query = {}; // Initialize an empty query object
-        
-        if (req.query.featured) {
-            // If "featured" is provided in the query, filter by featured hotels
-            query.featured = req.query.featured === 'true'; 
-            // Convert "true" or "false" to boolean
-        }
-        
-        const limit = parseInt(req.query.limit); // Convert limit to integer
-        
-        const allHotels = await Hotel.find(query).limit(limit); // Use the limit parameter
-        
-        return res.status(200).json(allHotels);
-    } catch (err) {
-        console.error(err);
-        next(err);
-    }
-};
 
 
 
