@@ -42,9 +42,10 @@ export const singleHotel = async (req, res, next) => {
     }
 }
 
+//Get All Hotels
 export const getAllHotels = async (req, res, next) => {    
     try {
-        const { featured, name, sort} = req.query;
+        const { featured, name, sort, fields} = req.query;
         const queryObject = {};
 
         if (featured){
@@ -56,15 +57,23 @@ export const getAllHotels = async (req, res, next) => {
         }
         
         let result = Hotel.find(queryObject);
+        //sort results
         if(sort){
             const sortList = sort.split(',').join(' ')
             result = result.sort(sortList);
         } else {
             result = result.sort('createdAt');
         }
+        //fields options
+        if(fields){
+            const fieldsList = fields.split(',').join(' ')
+            result = result.select(fieldsList);
+        }
+        //limits options
+        const limit = Number(req.query.limit) || 5
         
-        const allHotels = await result;
-        return res.status(200).json(allHotels)
+        const allHotels = await result.limit(limit);
+        return res.status(200).json({Total: allHotels.length,allHotels})
     } catch (err) {
         console.error(err)
         next(err);
