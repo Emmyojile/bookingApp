@@ -45,7 +45,7 @@ export const singleHotel = async (req, res, next) => {
 //Get All Hotels
 export const getAllHotels = async (req, res, next) => {    
     try {
-        const { featured, name, sort, fields} = req.query;
+        const { featured, name, sort, fields, filterOptions} = req.query;
         const queryObject = {};
 
         if (featured){
@@ -54,6 +54,27 @@ export const getAllHotels = async (req, res, next) => {
 
         if (name){
             queryObject.name = {$regex: name, $options: 'i'};
+        }
+        if(filterOptions){
+            const operatorMap = {
+                '>': '$gt',
+                '>=': '$gte',
+                '=' : '$eq',
+                '<': '$lt',
+                '<=': '$lte',
+            };
+            const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+            let filters = filterOptions.replace(
+                regEx,
+                (match) => `-${operatorMap[match]}-`
+            );
+            const options = ["cheapestPrice", "rating"];
+            filters = filters.split(',').forEach((item)=> {
+                const [field, operator, value] = item.split('-');
+                if(options.includes(field)){
+                    queryObject[field] = {[operator]: Number(value)};
+                }
+            });
         }
         
         let result = Hotel.find(queryObject);
