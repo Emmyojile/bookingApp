@@ -94,30 +94,12 @@ export const getAllHotels = async (req, res, next) => {
         const limit = Number(req.query.limit) || 5
         
         const allHotels = await result.limit(limit);
-        return res.status(200).json({Total: allHotels.length,allHotels})
+        return res.status(200).json(allHotels)
     } catch (err) {
         console.error(err)
         next(err);
     }
 }
-
-// Get All Hotels
-// export const getAllHotels = async (req, res, next) => {    
-//     try {
-//         const limit = Number(req.query.limit) || 1;
-//         const allHotels = await Hotel.find(req.query).limit(limit);
-//         console.log(req.query.limit);
-//         console.log(req.query);
-//         console.log(allHotels);
-//         return res.status(200).json(allHotels)
-//     } catch (err) {
-//         console.error(err)
-//         next(err);
-//     }
-// }
-
-
-
 
 // Get Hotels by Count
 export const countByCity = async (req, res, next) => {    
