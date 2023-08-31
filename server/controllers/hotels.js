@@ -45,7 +45,7 @@ export const singleHotel = async (req, res, next) => {
 //Get All Hotels
 export const getAllHotels = async (req, res, next) => {    
     try {
-        const { featured, name, sort, fields, filterOptions} = req.query;
+        const { featured, name, sort, fields, filterOptions, min, max } = req.query;
         const queryObject = {};
 
         if (featured){
@@ -53,9 +53,10 @@ export const getAllHotels = async (req, res, next) => {
         }
 
         if (name){
-            queryObject.name = {$regex: name, $options: 'i'};
+            queryObject.name = { $regex: name, $options: 'i' };
         }
-        if(filterOptions){
+        
+        if (filterOptions){
             const operatorMap = {
                 '>': '$gt',
                 '>=': '$gte',
@@ -63,43 +64,55 @@ export const getAllHotels = async (req, res, next) => {
                 '<': '$lt',
                 '<=': '$lte',
             };
+            
             const regEx = /\b(<|>|>=|=|<|<=)\b/g;
             let filters = filterOptions.replace(
                 regEx,
                 (match) => `-${operatorMap[match]}-`
             );
+            
             const options = ["cheapestPrice", "rating"];
-            filters = filters.split(',').forEach((item)=> {
+            
+            filters = filters.split(',').forEach((item) => {
                 const [field, operator, value] = item.split('-');
-                if(options.includes(field)){
-                    queryObject[field] = {[operator]: Number(value)};
+                if (options.includes(field)){
+                    queryObject[field] = { [operator]: Number(value) };
                 }
             });
         }
         
+        if (min) {
+            queryObject.cheapestPrice = { $gte: Number(min) };
+        }
+
+        if (max) {
+            queryObject.cheapestPrice = { ...queryObject.cheapestPrice, $lte: Number(max) };
+        }
+        
         let result = Hotel.find(queryObject);
-        //sort results
-        if(sort){
+        
+        if (sort){
             const sortList = sort.split(',').join(' ')
             result = result.sort(sortList);
         } else {
             result = result.sort('createdAt');
         }
-        //fields options
-        if(fields){
+        
+        if (fields){
             const fieldsList = fields.split(',').join(' ')
             result = result.select(fieldsList);
         }
-        //limits options
-        const limit = Number(req.query.limit) || 5
+        
+        const limit = Number(req.query.limit) || 9;
         
         const allHotels = await result.limit(limit);
-        return res.status(200).json(allHotels)
+        return res.status(200).json(allHotels);
     } catch (err) {
-        console.error(err)
+        console.error(err);
         next(err);
     }
 }
+
 
 
 // Get Hotels by Count

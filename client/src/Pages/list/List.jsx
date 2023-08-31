@@ -14,11 +14,11 @@ export const List = () => {
   const [date, setDate] = useState(location.state.date);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(location.state.options);
-  const [min, setMin] = useState("");
-  const [max, setMax] = useState("");
+  const [min, setMin] = useState(undefined);
+  const [max, setMax] = useState(undefined);
 
   const { data, loading, error, reFetch } = useFetch(
-    `/hotel?city=${destination}&filterOptions=cheapestPrice<=200&limit=4`
+    `/hotel?city=${destination}&min=${min || 0 }&max=${max || 999 }&limit=4`
   );
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const List = () => {
       setMin(Math.min(...prices));
       setMax(Math.max(...prices));
     }
-  }, [data]);
+  }, []);
 
   const handleClick = () => {
     reFetch();
@@ -111,7 +111,7 @@ export const List = () => {
                 </div>
               </div>
             </div>
-            <button>Search</button>
+            <button onClick={handleClick}>Search</button>
           </div>
           <div className="listResult">
             {loading ? (
