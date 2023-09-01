@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import "./login.css";
 
@@ -12,22 +13,22 @@ const Login = () => {
     const {user, loading, error, dispatch} = useContext(AuthContext);
 
     const handleChange = (e) => {
-        setCredentials((...prev) => ({...prev, [e.target.id]: e.target.value}))
+        setCredentials((prev) => ({...prev, [e.target.id]: e.target.value}));
     }
 
     const handleClick = async (e) => {
         e.preventDefault();
         dispatch({type: "LOGIN_START"})
         try {
-            const res = await axios.post(`/log`, credentials);
+            const res = await axios.post(`/login`, credentials);
             dispatch({type: "LOGIN_SUCCESS", payload: res.data});
             
         } catch (err) {
-            dispatch({type: "LOGIN_FAILURE", payload: err.data})
+            dispatch({type: "LOGIN_FAILURE", payload: err.response.data})
         }
     }
 
-    console.log(user);
+    // console.log(user);
 
   return (
     <div className="login">
