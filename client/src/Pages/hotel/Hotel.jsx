@@ -12,16 +12,22 @@ import MailList from "../../Components/mailList/MailList";
 import Footer from "../../Components/footer/Footer";
 import { useContext, useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
+import Reserve from "../../Components/reserve/Reserve";
 
 export const Hotel = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [slideNumber, setSlideNumber] = useState(0);
   const [openSlide, setOpenSlide] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { data, loading, error } = useFetch(`/hotel/singleHotel/${id}`);
+
+  const {user } = useContext(AuthContext)
+  const navigate = useNavigate();
 
   const {dates, options} = useContext(SearchContext);
 
@@ -32,7 +38,9 @@ export const Hotel = () => {
     return diffDays;
   }
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
+     const days = dayDifference(dates[0].endDate, dates[0].startDate);
+
 
   const handleOpenSlide = (i) => {
     setSlideNumber(i);
@@ -49,6 +57,14 @@ export const Hotel = () => {
 
     setSlideNumber(newSlideNumber);
   };
+
+  const handleClick = () => {
+    if (user) {
+      setOpenModal(true);
+    } else{
+      navigate("/")
+    }
+  }
 
   return (
     <div>
@@ -125,14 +141,14 @@ export const Hotel = () => {
                 <h2>
                   <b>${days * data.cheapestPrice * options.room}</b> ({days} nights)
                 </h2>
-                <button>Reserve or Book Now!</button>
+                <button onClick={handleClick}>Reserve or Book Now!</button>
               </div>
             </div>
           </div>
           <MailList />
           <Footer />
-        </div>
-      )}
+        </div>)}
+        {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
     </div>
   );
 };
