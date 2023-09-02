@@ -38,7 +38,6 @@ export const Hotel = () => {
     return diffDays;
   }
 
-  console.log("dates:", dates);
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
 
