@@ -38,8 +38,8 @@ export const Hotel = () => {
     return diffDays;
   }
 
-  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
-     const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  console.log("dates:", dates);
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
 
   const handleOpenSlide = (i) => {
