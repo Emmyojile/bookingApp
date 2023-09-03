@@ -7,25 +7,29 @@ import { SearchContext } from "../../context/SearchContext"
 const Reserve = ({setOpen, hotelId}) => {
 
     const [selectedRooms, setSelectedRooms] = useState([]);
+    
     const {data, loading, error} = useFetch(`hotel/rooms/${hotelId}`);
-    const {dates} = useContext(SearchContext)
+
+    const {dates} = useContext(SearchContext);
 
     const getDatesInRange = (startDate, endDate) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
+
         const date = new Date(start.getTime());
 
-        let list = [];
+        let dates = [];
 
-        while(data <= end) {
-            list.push(new Date(data));
+        while(date <= end) {
+            dates.push(new Date(date));
             date.setDate(date.getDate() + 1)
         }
 
-        return list
+        return dates
     };
 
     console.log(getDatesInRange(dates[0].startDate, dates[0].endDate));
+
     const handleSelect = (e) => {
         const checked = e.target.checked;
         const value = e.target.value;
@@ -36,9 +40,9 @@ const Reserve = ({setOpen, hotelId}) => {
             )
     };
 
-    const handleClick = () => {
+    // const handleClick = () => {
 
-    };
+    // };
 
   return (
     <div className='reserve'>
@@ -65,10 +69,10 @@ const Reserve = ({setOpen, hotelId}) => {
                         ))}
                 </div>
             ))}
-            <button onClick={handleClick} className='rButton'>Reserve Now</button>
+            {/* <button onClick={handleClick} className='rButton'>Reserve Now</button> */}
         </div>
     </div>
   )
 }
 
-export default Reserve
+export default Reserve;

@@ -61,7 +61,7 @@ export const Hotel = () => {
     if (user) {
       setOpenModal(true);
     } else{
-      navigate("/")
+      navigate("/login");
     }
   }
 
