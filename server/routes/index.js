@@ -8,7 +8,7 @@ import hotelRoutes from "./hotels.js";
 
 router.use('/', authRoutes);
 router.use('/user', userRoutes);
-router.use('/room', roomRoutes);
+router.use('/rooms', roomRoutes);
 router.use('/hotel', hotelRoutes);
 
 export default router;
