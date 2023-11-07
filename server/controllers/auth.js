@@ -23,7 +23,7 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return next(createError(404, "User not found ooo!"));
+    if (!user) return next(createError(404, "User not found!!!"));
 
     const suppliedPassword = await user.comparePassword(
       req.body.password,

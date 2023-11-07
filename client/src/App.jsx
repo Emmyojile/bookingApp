@@ -7,6 +7,7 @@ import axios from "axios";
 import { SearchContextProvider } from "./context/SearchContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import Login from "./Pages/login/Login";
+import Register from "./Pages/register/Register";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_LOCAL_URL;
 axios.defaults.withCredentials = true;
@@ -21,6 +22,7 @@ function App() {
             <Route path="/hotels" element={<List />} />
             <Route path="/hotel/:id" element={<Hotel />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register/>}/>
           </Routes>
         </SearchContextProvider>
       </AuthContextProvider>
